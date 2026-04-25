@@ -4,6 +4,7 @@ import numpy as np
 import scipy.signal as signal
 import librosa
 from pydub import AudioSegment
+from mutagen import File as MutagenFile
 
 # Suppress librosa deprecation warnings
 warnings.filterwarnings("ignore", category=FutureWarning, module="librosa")
@@ -55,6 +56,14 @@ def calculate_bpm(file_path, focus_kick=True):
 
     return float(tempo[0])
 
+def write_bpm_tag(file_path, bpm):
+    """Write BPM value to the file's metadata tags."""
+    audio = MutagenFile(file_path, easy=True)
+    if audio is None:
+        return
+    audio["BPM"] = str(int(round(bpm)))
+    audio.save()
+
 if __name__ == "__main__":
     if len(sys.argv) < 2:
         print("Usage: python bpm-calculator.py <file_path>")
@@ -64,6 +73,7 @@ if __name__ == "__main__":
     file_name = file_path.split("/")[-1]
     try:
         bpm = calculate_bpm(file_path)
+        write_bpm_tag(file_path, bpm)
         print(f"✅ {bpm:.2f} BPM -> {file_name}")
     except Exception as e:
         print(f"❌ {e}")
