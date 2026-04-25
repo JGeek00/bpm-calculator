@@ -4,62 +4,35 @@ Script to calculate the BPM of an audio file (mp3, m4a, wav, etc.).
 
 ## Requirements
 
-- Python 3.10+
-- [ffmpeg](https://ffmpeg.org/download.html) — required for mp3/m4a decoding
+- Python 3.10+ (required to run from source)
+- ffmpeg — required for mp3/m4a decoding
+- ffmpeg — required for mp3/m4a decoding
   ```bash
   # macOS
   brew install ffmpeg
 
-  # Linux (Debian/Ubuntu)
-  sudo apt install ffmpeg
-
-  # Linux (Fedora)
-  sudo dnf install ffmpeg
-
-  # Windows
-  # Download from https://ffmpeg.org/download.html or via WSL
+  # For other platforms, see https://ffmpeg.org/download.html
   ```
 
-## Development
+## Usage
 
-### 1. Create virtual environment
-
-```bash
-python3 -m venv .venv
-source .venv/bin/activate
-```
-
-### 2. Install dependencies
+# macOS
 
 ```bash
-pip install --upgrade pip
-pip install -r requirements.txt
+# Make executable (if needed)
+chmod +x bpm-calculator
+
+# Run against a file or directory
+./bpm-calculator /path/to/file_or_directory
 ```
 
-### 3. Run the script
+Optional: move the binary to your PATH for convenience:
 
 ```bash
-python3 main.py <file_path>
+sudo mv bpm-calculator /usr/local/bin/
 ```
+Important notes for end users
 
-Example:
-
-```bash
-python3 main.py "track.mp3"
-# 🎵 Detected BPM: 128.45
-```
-
-## Generate standalone executable
-
-```bash
-pip install pyinstaller
-pyinstaller --onefile --name bpm-calculator main.py
-```
-
-The executable is generated in `dist/bpm-calculator`.
-
-## Notes
-
-- The virtual environment is ignored in git (`.gitignore`).
-- `focus_kick=True` (default) filters low frequencies (20-150 Hz) for higher accuracy.
-- Without ffmpeg, only native WAV files will work.
+- The packaged executable is platform-specific (OS and CPU architecture). Download the correct build for your system.
+- `ffmpeg` is required for mp3/m4a decoding and is not bundled with the binary. Install it system-wide (e.g. `brew install ffmpeg` on macOS).
+- If you only have the source file `main.py` (not the binary), see [DEVELOPMENT.md](DEVELOPMENT.md) for instructions to create the standalone executable.
