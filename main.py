@@ -57,8 +57,14 @@ def calculate_bpm(file_path, focus_kick=True):
 
 if __name__ == "__main__":
     if len(sys.argv) < 2:
-        print("Usage: python bpm_calculator.py <file_path>")
+        print("Usage: python bpm-calculator.py <file_path>")
         sys.exit(1)
-        
-    bpm = calculate_bpm(sys.argv[1])
-    print(f"🎵 Detected BPM: {bpm:.2f}")
+
+    file_path = sys.argv[1]
+    file_name = file_path.split("/")[-1]
+    try:
+        bpm = calculate_bpm(file_path)
+        print(f"✅ {bpm:.2f} BPM -> {file_name}")
+    except Exception as e:
+        print(f"❌ {e}")
+        sys.exit(1)
