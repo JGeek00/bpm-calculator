@@ -33,7 +33,7 @@ source .venv/bin/activate
 
 ```bash
 pip install --upgrade pip
-pip install pydub librosa numpy scipy
+pip install -r requirements.txt
 ```
 
 ### 3. Run the script

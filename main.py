@@ -1,8 +1,18 @@
 import sys
+import warnings
 import numpy as np
 import scipy.signal as signal
 import librosa
 from pydub import AudioSegment
+
+# Suppress librosa deprecation warnings
+warnings.filterwarnings("ignore", category=FutureWarning, module="librosa")
+
+# Fallback for librosa < 0.10.0
+try:
+    from librosa.feature.rhythm import tempo as get_tempo
+except ImportError:
+    get_tempo = librosa.beat.tempo
 
 def calculate_bpm(file_path, focus_kick=True):
     """
@@ -37,7 +47,7 @@ def calculate_bpm(file_path, focus_kick=True):
     )
     
     # 5. Estimate tempo
-    tempo = librosa.beat.tempo(
+    tempo = get_tempo(
         onset_envelope=onset_env,
         sr=sr,
         hop_length=hop_length,
